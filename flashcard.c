@@ -4,6 +4,8 @@
 #include <windows.h>//For Sleep
 //There will be two options, one to revise more flashcards, and another one to create more.
 //We will use the FOP approach for this and create two seperate funtions, for either case
+int *contents;
+//Contents is the header of the array that will store the page data
 void cls()
 {
     system("cls");    
@@ -25,7 +27,7 @@ void loadingscreen()
         Sleep(200);
         cls();
     }
-    options()//After this the user is sent to options
+    options();//After this the user is sent to options
 }
 void options()
 {
