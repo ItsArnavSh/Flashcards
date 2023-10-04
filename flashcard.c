@@ -1,7 +1,84 @@
 //Creating a flashcards terminal app for a C
 #include <stdio.h>  //for printf() and scanf().
+#include <stdlib.h> //for cls
+#include <windows.h>//For Sleep
 //There will be two options, one to revise more flashcards, and another one to create more.
 //We will use the FOP approach for this and create two seperate funtions, for either case
+void cls()
+{
+    system("cls");    
+}
+void loadingscreen()
+{
+    cls();
+    printf("...Press Enter to Start...");
+    int p;
+    scanf("%c",&p);
+    cls();
+    for(int i=0;i<=3;i++)
+    {
+        printf("Loading");
+        for(int j=0;j<i;j++)
+        {
+            printf(".");
+        }
+        Sleep(200);
+        cls();
+    }
+    options()//After this the user is sent to options
+}
+void options()
+{
+    asking:
+    printf("Welcome to The Flashcard App\n");
+    printf("Enter 1 to create the card\nEnter 2 to review existing decks\nEnter 3 for Help");
+    int choice;
+    printf("\n----Enter here: ");
+    scanf("%d",choice);
+    Sleep(100);
+    cls();
+    switch(choice)
+    {
+        case 1:
+        create();
+        break;
+        case 2:
+        review();
+        break;
+        case 3:
+        docs();
+        break;
+        default:
+        printf("Please enter 1 2 or 3!");
+        cls();
+        goto asking;
+    }
+}
+void docs()
+{
+    //This is a wikihow that will be displayed in the cml
+    printf("Welcome to Flashcard Help\n");
+    //This will have a directory structure, using nested switch cases
+    //Press 1 to know more about this and press any other button to go back
+    //There will always be a press 0 to exit and go back to the main menu
+    printf("When you log into, you are presented with two options, apart from the help section\n");
+    printf("The Create and The Review Buttons");
+    printf("\nPress an even number to know more about create and an odd number to know more about Review");
+    printf("\n:- ");
+    int choice;
+    scanf("%d",choice);
+    switch(choice%2)
+    {
+        case 1://Odd
+        //Tell more about create
+        //Add an option to go back one menu
+        break;
+        case 0://Even
+        //Tell more about Review
+        //Add an option to go back one menu
+        break;
+    }
+}
 void create()
 {
     //The user is prompted to either create a new deck or add cards to an existing deck or to delete an existing deck
@@ -52,5 +129,6 @@ void display()
 }
 int main(void)
 {
-    
+    //The loading screen comes up, with the ususal press enter to start.
+    loadingscreen();
 }
