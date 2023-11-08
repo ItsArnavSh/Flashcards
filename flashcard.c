@@ -1,136 +1,255 @@
-//Creating a flashcards terminal app for a C
-#include <stdio.h>  //for printf() and scanf().
-#include <stdlib.h> //for cls
-#include <windows.h>//For Sleep
-//There will be two options, one to revise more flashcards, and another one to create more.
-//We will use the FOP approach for this and create two seperate funtions, for either case
-int *contents;
-//Contents is the header of the array that will store the page data
+#include <stdio.h>
+#include <unistd.h>
+#include <string.h>
+#include <stdlib.h>
+//All the user defined functions
+void cls();
+void stop(int milliseconds);
+void start();
+void help();
+void display();
+void loading();
+void input();
+int checkSize(char buffer[20]);
+int exists(char buffer[20]);
+char code[5];
+void opener(char buffer[20]);
+void writer(char buffer[20]);
+void appender(char buffer[20]);
+void qizzer(char buffer[20]);
+int main()
+{
+    start();
+    loading();
+
+    return 0;
+}
 void cls()
 {
-    system("cls");    
+    system("cls");
 }
-void loadingscreen()
+void stop(int milliseconds)
 {
-    cls();
-    printf("...Press Enter to Start...");
-    int p;
-    scanf("%c",&p);
-    cls();
-    for(int i=0;i<=3;i++)
+    sleep(milliseconds/1000);
+}
+void loading()
+{
+    for(int i=0;i<4;i++)
     {
         printf("Loading");
-        for(int j=0;j<i;j++)
+        for(int j=0;j<=i;j++)
         {
             printf(".");
         }
-        Sleep(200);
+        stop(200);
         cls();
     }
-    options();//After this the user is sent to options
 }
-void options()
+void start()
 {
-    asking:
-    printf("Welcome to The Flashcard App\n");
-    printf("Enter 1 to create the card\nEnter 2 to review existing decks\nEnter 3 for Help");
-    int choice;
-    printf("\n----Enter here: ");
-    scanf("%d",choice);
-    Sleep(100);
+    printf("Welcome to Flashcards!\n");
+    ///stop(2000);
     cls();
-    switch(choice)
+    printf("This is a program that will help you study.\n");
+    ///stop(2000);
+    cls();
+    printf("Press h for help, or any other character to continue\n");
+    char choice;
+    scanf("%c", &choice);
+    if (choice == 'h' || choice == 'H')
     {
-        case 1:
-        create();
-        break;
-        case 2:
-        review();
-        break;
-        case 3:
-        docs();
-        break;
-        default:
-        printf("Please enter 1 2 or 3!");
-        cls();
-        goto asking;
+        help();
     }
+    cls();
+    display();
 }
-void docs()
+void help()
 {
-    //This is a wikihow that will be displayed in the cml
-    printf("Welcome to Flashcard Help\n");
-    //This will have a directory structure, using nested switch cases
-    //Press 1 to know more about this and press any other button to go back
-    //There will always be a press 0 to exit and go back to the main menu
-    printf("When you log into, you are presented with two options, apart from the help section\n");
-    printf("The Create and The Review Buttons");
-    printf("\nPress an even number to know more about create and an odd number to know more about Review");
-    printf("\n:- ");
-    int choice;
-    scanf("%d",choice);
-    switch(choice%2)
-    {
-        case 1://Odd
-        //Tell more about create
-        //Add an option to go back one menu
-        break;
-        case 0://Even
-        //Tell more about Review
-        //Add an option to go back one menu
-        break;
-    }
-}
-void create()
-{
-    //The user is prompted to either create a new deck or add cards to an existing deck or to delete an existing deck
-    //If the user wants to edit an existing deck or delete it, he is sent to display() from here that displays all the decks that are available
-    //After that, the user is sent to writer() for edit or deckDelete() in case of deletion with the code of the deck.
-    //If user wants to add a new deck, he is sent to newDeck()
-}
-void newDeck()
-{
-    //The user is prompted to enter its name
-    //The computer generates a 2 letter code for this deck.
-    //Then the user is redirected to card append
-}
-void writer()
-{
-    //This function will generate the "flow" of control for all the data and send it
-
-}
-void cardappend()
-{
-    //This is used to add questions to a card
-}
-void carddelete()
-{
-    //This is used to delete a specific card from a deck
-
-}
-void deckDelete()
-{
-    //This will delete the entire deck.
-    //Not really delete, but only remove its name from the header file.
-}
-void deleter()
-{
-    //Redirected here from deck delete and 
-    //We will use a temp file, copy everything from the main file to the temp file, except for the element to be deleted
-    //After that we take the temp file and write it over the main file.
-}
-//The code below this is for review purposes...literally
-void review()
-{
- //The user is directed to display()
- //The flow will return here after the display
+    //All the help will be entered here.
+    /*
+    - Welcome to the Flashcards App that will help you study
+    - It works on the principle of Active Recall, which states the best way to put information in your brain is by taking it out of it
+    - It is a very effective method of memorization and learning.
+    - The following is a guide on how to use this software
+    - The code will display the list of all the existing files, or decks
+    - They will be displayed in a pattern name - CODE
+    - Then you will be prompted to enter the code.
+    - If you enter an existing code, then the file will open up
+    - You will be asked if you want to be quizzed on that code or if you want to edit it
+    - If you choose to be quizzed, then the code will simply ask you questions
+    - If you choose to edit the file, then follow the instructions
+    */
 }
 void display()
 {
-    //This snippet is supposed to display all the files from the content file along with their codes
+    printf("Below is the list of all the files, with their codes \n");
+    FILE *file = fopen("contents.txt","r");
+    char data[100];
+    int i=0;
+    while(fgets(data, sizeof(data), file))
+    {
+        *(data+strlen(data)-1) = '\0';
+        if(i%2==0)
+        {
+            printf("%s\t",data);
+        }
+        else
+        {
+            printf("%s\n",data);
+        }
+        i++;
+    }
+    input();
 }
-int main(void)
+void input()
 {
-    //The loading screen comes up, with the ususal press enter to start.
-    loadingscreen();
+    printf("--------------------------");
+    printf("\nEnter the code: ");
+    char buffer[20];
+    scanf("%s",buffer);
+    int a = checkSize(buffer);
+    int b = exists(buffer);
+    if(a == 1)
+    {
+        if(b == 1)
+        {
+            opener(buffer);
+        }
+        else
+        {
+            writer(buffer);
+        }
+    }
+    else
+    {
+        printf("The code should be 4 letters long!\n");
+    }
+    stop(1000);
+}
+int checkSize(char buffer[20])
+{
+    int size = strlen(buffer);
+    if(size==4)
+    {
+        return 1;
+    }
+    else
+    {
+        return 0;
+    }
+}
+int exists(char buffer[20])
+{
+    FILE *file = fopen("contents.txt","r");
+    char data[100];
+    int i=0;
+    while(fgets(data, sizeof(data), file))
+    {
+        *(data+strlen(data)-1) = '\0';
+        if(i%2==0)
+        {
+            if(strcmp(data,buffer)==0)
+            {
+                return 1;
+            }
+        }
+        i++;
+    }
+    return 0;
+}
+void opener(char buffer[20])
+{
+    printf("The Deck has been opened!\n");
+    printf("Press 1 to add new questions\n");
+    printf("Press 2 to practice the deck\n");
+    int choice;
+    scanf("%d",&choice);
+    if(choice==1)
+    {
+        appender(buffer);
+    }
+    else if(choice==2)
+    {
+        qizzer(buffer);
+    }
+    else
+    {
+        printf("Invalid Choice!\n");
+    }
+}
+void writer(char buffer[20])
+{
+    printf("A new deck with the code %s has been created.\n",buffer);
+    printf("Enter the name of the deck: ");
+    char name[20];
+    gets(name);
+    FILE *file = fopen("contents.txt","a");
+    fprintf(file,"%s\n",buffer);
+    fprintf(file,"%s\n",name);
+    fclose(file);
+    char location[30];
+    strcpy(location,"decks/");
+    strcat(location,buffer);
+    strcat(location,".txt");
+    file = fopen(location,"w");
+    while(1==1)
+    {
+    printf("Enter the question: ");
+    char question[100];
+    gets(question);
+    if(strcmp(question,"0")==0)
+    {
+        break;
+    }
+    fprintf(file,"%s\n",question);
+    printf("Enter the answer: ");
+    char answer[100];
+    gets(answer);
+    fprintf(file,"%s\n",answer);
+    }
+    fclose(file);
+}
+void appender(char buffer[20])
+{
+    char location[30];
+    strcpy(location,"decks/");
+    strcat(location,buffer);
+    strcat(location,".txt");
+    FILE *file = fopen(location,"a");
+    printf("Enter the question: ");
+    char question[100];
+    scanf("%s",question);
+    fprintf(file,"%s\n",question);
+    printf("Enter the answer: ");
+    char answer[100];
+    scanf("%s",answer);
+    fprintf(file,"%s\n",answer);
+    fclose(file);
+}
+void qizzer(char buffer[20])
+{
+    char location[30];
+    strcpy(location,"decks/");
+    strcat(location,buffer);
+    strcat(location,".txt");
+    FILE *file = fopen(location,"r");
+    char data[100];
+    int i=0;
+    while(fgets(data, sizeof(data), file))
+    {
+        *(data+strlen(data)-1) = '\0';
+        if(i%2==0)
+        {
+            printf("%s\n",data);
+        }
+        else
+        {
+            printf("Press any key to see the answer\n");
+            char ch;
+            scanf("%c",&ch);
+            printf("%s\n",data);
+        }
+        i++;
+    }
+    fclose(file);
 }
