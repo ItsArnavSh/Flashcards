@@ -1,7 +1,4 @@
-WERS
-test1
-MERS
-test3
-WEAS
-anImportantFileWARN
-
+WARN
+Two
+WERN
+three

@@ -26,7 +26,7 @@ int main()
 }
 void cls()
 {
-    system("cls");
+    system("clear");
 }
 void stop(int milliseconds)
 {
@@ -182,7 +182,7 @@ void writer(char buffer[20])
     printf("A new deck with the code %s has been created.\n",buffer);
     printf("Enter the name of the deck: ");
     char name[20];
-    gets(name);
+    scanf("%s",name);
     FILE *file = fopen("contents.txt","a");
     fprintf(file,"%s\n",buffer);
     fprintf(file,"%s\n",name);
@@ -196,15 +196,16 @@ void writer(char buffer[20])
     {
     printf("Enter the question: ");
     char question[100];
-    gets(question);
+    scanf("%s",question);
     if(strcmp(question,"0")==0)
     {
+        restart();
         break;
     }
     fprintf(file,"%s\n",question);
     printf("Enter the answer: ");
     char answer[100];
-    gets(answer);
+    scanf("%s",answer);
     fprintf(file,"%s\n",answer);
     }
     fclose(file);
@@ -216,14 +217,22 @@ void appender(char buffer[20])
     strcat(location,buffer);
     strcat(location,".txt");
     FILE *file = fopen(location,"a");
-    printf("Enter the question: ");
+    while(1==1)
+    {
     char question[100];
     scanf("%s",question);
+    if(strcmp(question,"0")==0)
+    {
+        restart();
+        break;
+    }
     fprintf(file,"%s\n",question);
     printf("Enter the answer: ");
     char answer[100];
     scanf("%s",answer);
     fprintf(file,"%s\n",answer);
+    }
+    printf("Enter the question: ");
     fclose(file);
 }
 void qizzer(char buffer[20])
@@ -252,4 +261,9 @@ void qizzer(char buffer[20])
         i++;
     }
     fclose(file);
+}
+restart()
+{
+    cls();
+    main();
 }
